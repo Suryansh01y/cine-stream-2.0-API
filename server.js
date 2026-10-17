@@ -11,11 +11,17 @@ const allowedOrigins = (process.env.FRONTEND_URL || "http://localhost:5173")
   .split(",")
   .map((origin) => origin.trim())
   .filter(Boolean);
+console.log("FRONTEND_URL from env:", process.env.FRONTEND_URL);
+console.log("Allowed origins:", allowedOrigins);
+
 
 app.use(cors({
   origin(origin, callback) {
     // Permit non-browser clients such as curl/Postman, plus configured frontend origins.
     if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
+
+    console.log("Blocked origin:", origin);
+    
     return callback(new Error("Origin is not allowed by CORS."));
   },
 }));
